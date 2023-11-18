@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Home from '../pages/Home';
+import Listado from '../pages/Listado';
+import Detalle from '../pages/Detalle';
 
 const NotFound = () => <h1>404: Not Found</h1>;
 
@@ -12,6 +14,9 @@ function AppRouter() {
                 <Route path="404" element={<NotFound />} />
                 {/* RUTAS PROPIAS */}
                 <Route path="home" element={<Home />} />
+                <Route path="agregar" element={<Detalle />} />
+                <Route path="editar" element={<Detalle />} />
+                <Route path="listado" element={<Listado />} />
             </Routes>
         </>
     );
