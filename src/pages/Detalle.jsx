@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from 'axios';
+import { useParams } from "react-router-dom";
 
 function Detalle() {
     const [formData, setFormData] = useState({
@@ -10,6 +11,25 @@ function Detalle() {
     const headers = {
         'Authorization': '9faa4f2eed9b6c5f9a748d54ed32cc90'
     }
+
+    const {id} = useParams();
+
+    useEffect(()=>{
+        // cargar el registro que tenga ese id...
+        const cargarRegistro = async ()=> {
+            try {
+                const response = await axios.get(`https://dev4humans.com.mx/api/clases/tareas?usuario=jesusc&id=${id}`, {headers});
+                setFormData(response.data.data);
+                console.log(response);
+            } catch (error) {
+                console.log("Error en carga de informacion", error);
+            }
+        }
+
+        if (id) {
+            cargarRegistro();
+        }
+    }, [id])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,13 +51,24 @@ function Detalle() {
         e.preventDefault();
         console.log(formData);
         try {
-            const response = await axios
-                .post(
-                    `https://dev4humans.com.mx/api/clases/tareas`,
+            if (id) {
+                const response = await axios
+                .put(
+                    `https://dev4humans.com.mx/api/clases/tareas?usuario=jesusc&id=${id}`,
                     formData,
                     { headers }
                 );
-            console.log(response);
+                console.log(response);
+            } else {
+
+                const response = await axios
+                    .post(
+                        `https://dev4humans.com.mx/api/clases/tareas`,
+                        formData,
+                        { headers }
+                    );
+                console.log(response);
+            }
         } catch (error) {
             console.log("Error en carga de informacion", error);
         }
